@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_splash"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.codepath.apps.twitter.activities.SplashActivity">
+
+    <ImageView
+        android:id="@+id/twitter_logo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="10dp"
+        android:contentDescription="@string/twitter"
+        android:src="@drawable/twitter_logo" />
+
+    <TextView
+        android:id="@+id/welcome_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/twitter_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="100dp"
+        android:text="@string/tweets_welcome"
+        android:textColor="@color/transparent_black_50"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/connectTwitterAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/welcome_label"
+        android:layout_centerHorizontal="true"
+        android:text="@string/connect_twitter_account" />
+
+</RelativeLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Twitter App</string>
+    <string name="login_label">Log in</string>
+    <string name="twitter">Twitter</string>
+    <string name="tweets_welcome">Welcome to your home of tweets</string>
+    <string name="connect_twitter_account">Connect twitter account</string>
+    <string name="sample_tweet">Помешает ли кольцо в носу на собеседовании? Инструкция для тех, кто ищет работу.Помешает ли кольцо в носу на собеседовании? Инструкция для тех, кто ищет работу.</string>
+    <string name="profile_image">Profile image</string>
+
+</resources>

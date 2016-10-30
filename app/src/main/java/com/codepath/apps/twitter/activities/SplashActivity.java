@@ -3,7 +3,9 @@ package com.codepath.apps.twitter.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.codepath.apps.twitter.R;
 import com.codepath.apps.twitter.TwitterClient;
@@ -16,6 +18,8 @@ public class SplashActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 
     @BindView(R.id.connectTwitterAccount)
     Button connectButton;
+    @BindView(R.id.errorLabel)
+    TextView errorLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +39,12 @@ public class SplashActivity extends OAuthLoginActionBarActivity<TwitterClient> {
         if (getClient().isAuthenticated()) {
             openHome();
         } else {
-            connectButton.setOnClickListener((v) -> getClient().connect());
+            fadeIn(connectButton);
+            connectButton.setOnClickListener((v) -> {
+                getClient().connect();
+                fadeOut(connectButton);
+                fadeOut(errorLabel);
+            });
         }
     }
 
@@ -52,6 +61,18 @@ public class SplashActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 
     @Override
     public void onLoginFailure(Exception e) {
-        e.printStackTrace();
+        fadeIn(connectButton);
+        fadeIn(errorLabel);
+    }
+
+    void fadeIn(View view) {
+        view.setAlpha(0);
+        view.setVisibility(View.VISIBLE);
+        view.animate().alpha(1).setDuration(1000).start();
+    }
+
+    void fadeOut(View view) {
+        view.setAlpha(1);
+        view.animate().alpha(0).setDuration(1000).withEndAction(() -> view.setVisibility(View.GONE)).start();
     }
 }

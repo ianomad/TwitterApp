@@ -10,8 +10,9 @@ import java.util.Date;
  * https://github.com/pardom/ActiveAndroid/wiki/Creating-your-database-model
  * 
  */
-public class Tweet  {
+public class Tweet {
 
+    private Long id;
     private String text;
 
     @SerializedName("created_at")
@@ -67,5 +68,13 @@ public class Tweet  {
 
     public void setRetweetCount(int retweetCount) {
         this.retweetCount = retweetCount;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

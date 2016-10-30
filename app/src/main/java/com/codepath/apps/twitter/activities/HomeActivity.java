@@ -10,6 +10,7 @@ import com.codepath.apps.twitter.TwitterApplication;
 import com.codepath.apps.twitter.TwitterClient;
 import com.codepath.apps.twitter.adapters.TweetsAdapter;
 import com.codepath.apps.twitter.models.Tweet;
+import com.codepath.apps.twitter.utils.EndlessRecyclerViewScrollListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -28,10 +29,14 @@ public class HomeActivity extends AppCompatActivity {
     @BindView(R.id.tweetRV)
     RecyclerView recyclerView;
 
+    private final Gson gson = new GsonBuilder()
+            .setPrettyPrinting()
+            .setDateFormat("EEE MMM dd HH:mm:ss Z yyyy").create();
+
     private List<Tweet> tweetList;
     private TweetsAdapter tweetsAdapter;
     private TwitterClient twitterClient;
-    private RecyclerView.LayoutManager layoutManager;
+    private LinearLayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +57,30 @@ public class HomeActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(tweetsAdapter);
+        recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                twitterClient.getHomeTimeline(tweetList.get(tweetList.size() - 1).getId(), new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        Tweet[] tweets = gson.fromJson(new String(responseBody), Tweet[].class);
+                        tweetsAdapter.addTweets(tweets);
+                        tweetsAdapter.notifyDataSetChanged();
 
-        twitterClient.getHomeTimeline(new AsyncHttpResponseHandler() {
+                        System.out.println(gson.toJson(gson.fromJson(new String(responseBody), JsonArray.class)));
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        error.printStackTrace();
+                    }
+                });
+            }
+        });
+
+        twitterClient.getHomeTimeline(null, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Gson gson = new GsonBuilder()
-                        .setPrettyPrinting()
-                        .setDateFormat("EEE MMM dd HH:mm:ss Z yyyy").create();
-
                 Tweet[] tweets = gson.fromJson(new String(responseBody), Tweet[].class);
                 tweetsAdapter.addTweets(tweets);
                 tweetsAdapter.notifyDataSetChanged();
@@ -69,7 +90,7 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
+                error.printStackTrace();
             }
         });
     }

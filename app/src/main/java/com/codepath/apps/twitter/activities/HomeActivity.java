@@ -2,6 +2,7 @@ package com.codepath.apps.twitter.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,6 +28,8 @@ public class HomeActivity extends AppCompatActivity implements CreateTweetDialog
     RecyclerView recyclerView;
     @BindView(R.id.fab)
     FloatingActionButton fab;
+    @BindView(R.id.swipeContainer)
+    SwipeRefreshLayout swipeContainer;
 
     private List<Tweet> tweetList;
     private TweetsAdapter tweetsAdapter;
@@ -83,7 +86,13 @@ public class HomeActivity extends AppCompatActivity implements CreateTweetDialog
             }
         });
 
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
         fab.setOnClickListener(v -> new CreateTweetDialog().show(getSupportFragmentManager(), "CreateTweet"));
+        swipeContainer.setOnRefreshListener(this::getNewestTweets);
     }
 
     private void getNewestTweets() {
@@ -95,6 +104,8 @@ public class HomeActivity extends AppCompatActivity implements CreateTweetDialog
                 tweetsAdapter.addTweets(0, tweetList);
                 tweetsAdapter.notifyDataSetChanged();
                 recyclerView.smoothScrollToPosition(0);
+
+                swipeContainer.setRefreshing(false);
             }
 
             @Override
@@ -111,6 +122,7 @@ public class HomeActivity extends AppCompatActivity implements CreateTweetDialog
         twitterClient.postTweet(tweet, new TwitterClient.CreateTweetCallback() {
             @Override
             public void onSuccess() {
+                swipeContainer.setRefreshing(true);
                 getNewestTweets();
             }
 

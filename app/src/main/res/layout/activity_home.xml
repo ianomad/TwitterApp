@@ -8,10 +8,18 @@
     android:fitsSystemWindows="true"
     tools:context="com.codepath.apps.twitter.activities.HomeActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/tweetRV"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/tweetRV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -20,8 +28,9 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:src="@drawable/add"
-        app:layout_behavior="com.codepath.apps.twitter.utils.ScrollAwareFABBehavior"
         app:backgroundTint="@color/colorPrimaryDark"
-        app:fabSize="normal" />
+        app:fabSize="normal"
+        app:layout_behavior="com.codepath.apps.twitter.utils.ScrollAwareFABBehavior" />
+
 
 </android.support.design.widget.CoordinatorLayout>

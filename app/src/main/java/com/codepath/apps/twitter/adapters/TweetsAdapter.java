@@ -29,6 +29,9 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetViewHolder> {
 
+    static final int WITHOUTIMAGE = 1;
+    static final int WITHIMAGE = 2;
+
     Context context;
     List<Tweet> tweetList;
     PrettyTime prettyTime;
@@ -42,9 +45,23 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetViewHolder> {
     @Override
     public TweetViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.tweet_item, parent, false);
+        View view;
+        if (viewType == WITHOUTIMAGE) {
+            view = LayoutInflater.from(context).inflate(R.layout.tweet_item, parent, false);
+        } else {
+            view = LayoutInflater.from(context).inflate(R.layout.tweet_item_with_image, parent, false);
+        }
 
         return new TweetViewHolder(view);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (null == tweetList.get(position).getImageUrl()) {
+            return WITHOUTIMAGE;
+        }
+
+        return WITHIMAGE;
     }
 
     private Tweet getItem(int position) {
@@ -64,7 +81,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetViewHolder> {
         h.retweetCount.setText(String.valueOf(tweet.getRetweetCount()));
 
         Glide.with(context)
-                .load(tweet.getUser().getProfileImageUrl()) //.replaceFirst("_normal", "")) //this is to increase size
+                .load(tweet.getUser().getProfileImageUrl())
                 .bitmapTransform(new RoundedCornersTransformation(context, 3, 3))
                 .into(h.profileImage);
 
@@ -72,10 +89,17 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetViewHolder> {
             Toast.makeText(context, "You have liked this...", Toast.LENGTH_SHORT).show();
         });
 
-        h.rootView.setOnClickListener((v) -> {
+        h.more.setOnClickListener((v) -> {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/ + " + tweet.getId()));
             context.startActivity(browserIntent);
         });
+
+        if (null != tweet.getImageUrl() && null != h.imageView) {
+            Glide.with(context)
+                    .load(tweet.getImageUrl())
+                    .bitmapTransform(new RoundedCornersTransformation(context, 3, 3))
+                    .into(h.imageView);
+        }
     }
 
     @Override

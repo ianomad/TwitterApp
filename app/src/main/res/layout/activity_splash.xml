@@ -32,17 +32,20 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/welcome_label"
         android:layout_centerHorizontal="true"
+        android:background="@drawable/button_bg"
+        android:padding="7dp"
         android:text="@string/connect_twitter_account"
+        android:textColor="@color/white"
         android:visibility="gone" />
 
     <TextView
         android:id="@+id/errorLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:layout_below="@id/connectTwitterAccount"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/red"
+        android:visibility="gone"
         tools:text="Failed to connect your account, please, try again." />
 
 </RelativeLayout>

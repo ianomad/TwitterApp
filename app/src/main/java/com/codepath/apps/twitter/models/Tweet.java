@@ -26,6 +26,8 @@ public class Tweet {
     @SerializedName("retweet_count")
     private int retweetCount;
 
+    private Entities entities;
+
     public Tweet() {
 
     }
@@ -76,5 +78,14 @@ public class Tweet {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getImageUrl() {
+
+        if(null == entities || null == entities.getMedia() || entities.getMedia().isEmpty()) {
+            return null;
+        }
+
+        return entities.getMedia().get(0).getMediaUrl();
     }
 }

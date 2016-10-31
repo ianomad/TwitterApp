@@ -1,5 +1,6 @@
 package com.codepath.apps.twitter.views;
 
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -33,6 +34,13 @@ public class TweetViewHolder extends RecyclerView.ViewHolder {
     public TextView retweetCount;
     @BindView(R.id.favCount)
     public TextView favCount;
+
+    @BindView(R.id.moreButton)
+    public View more;
+
+    @Nullable
+    @BindView(R.id.imageView)
+    public ImageView imageView;
 
     public TweetViewHolder(View itemView) {
         super(itemView);

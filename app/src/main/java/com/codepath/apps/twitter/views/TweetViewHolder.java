@@ -17,6 +17,8 @@ import butterknife.ButterKnife;
 
 public class TweetViewHolder extends RecyclerView.ViewHolder {
 
+    @BindView(R.id.rootView)
+    public View rootView;
     @BindView(R.id.content)
     public TextView content;
     @BindView(R.id.screenName)

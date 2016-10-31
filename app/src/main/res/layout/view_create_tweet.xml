@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="@string/compose_new_tweet"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/tweetEt"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@id/header"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/edit_text_bg"
+        android:gravity="start|top"
+        android:hint="@string/create_tweet_hint"
+        android:padding="5dp"
+        android:textColor="@color/transparent_black_50"
+        android:textColorHint="@color/colorLight"
+        android:textSize="13sp" />
+
+    <Button
+        android:id="@+id/tweetBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/tweetEt"
+        android:layout_marginEnd="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/button_bg"
+        android:text="@string/tweet"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/leftCharCount"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_below="@id/tweetEt"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_toLeftOf="@id/tweetBtn"
+        android:layout_toStartOf="@id/tweetBtn"
+        android:gravity="center_vertical"
+        android:text="@string/_140"
+        android:maxEms="140"
+        android:textColor="@color/colorAccent" />
+
+</RelativeLayout>

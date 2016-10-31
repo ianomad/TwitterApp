@@ -1,6 +1,8 @@
 package com.codepath.apps.twitter.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,6 +71,11 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetViewHolder> {
         h.favCount.setOnClickListener((v) -> {
             Toast.makeText(context, "You have liked this...", Toast.LENGTH_SHORT).show();
         });
+
+        h.rootView.setOnClickListener((v) -> {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/ + " + tweet.getId()));
+            context.startActivity(browserIntent);
+        });
     }
 
     @Override
@@ -76,7 +83,11 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetViewHolder> {
         return tweetList.size();
     }
 
-    public void addTweets(Tweet[] tweets) {
-        Collections.addAll(tweetList, tweets);
+    public void addTweets(int index, List<Tweet> tweets) {
+        tweetList.addAll(index, tweets);
+    }
+
+    public void addTweets(List<Tweet> tweets) {
+        tweetList.addAll(tweets);
     }
 }

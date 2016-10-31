@@ -4,15 +4,29 @@ import org.scribe.builder.api.Api;
 import org.scribe.builder.api.TwitterApi;
 
 import android.content.Context;
+import android.util.Log;
 
+import com.codepath.apps.twitter.models.Tweet;
 import com.codepath.oauth.OAuthBaseClient;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.mime.content.StringBody;
 
 public class TwitterClient extends OAuthBaseClient {
     private static final Class<? extends Api> REST_API_CLASS = TwitterApi.class;
+
+    private final static Gson gson = new GsonBuilder()
+            .setPrettyPrinting()
+            .setDateFormat("EEE MMM dd HH:mm:ss Z yyyy").create();
 
     private static final String REST_URL = "https://api.twitter.com/1.1/";
     private static final String REST_CALLBACK_URL = "oauth://twitter-android";
@@ -27,34 +41,73 @@ public class TwitterClient extends OAuthBaseClient {
     /**
      * Get twitter home timeline
      *
-     * @param handler
+     * @param callback
      */
-    public void getHomeTimeline(Long maxId, AsyncHttpResponseHandler handler) {
-        if(true == true) {
-            getHomeTimelineMock(maxId, handler);
-            return;
-        }
+    public void getHomeTimeline(Long sinceId, Long maxId, TweetsCallback callback) {
+//        if (true == true) {
+//            getHomeTimelineMock(maxId, callback);
+//            return;
+//        }
 
         String apiUrl = getApiUrl("/statuses/home_timeline.json");
 
         RequestParams params = new RequestParams();
         params.put("format", "json");
         params.put("count", 25);
-        params.put("since_id", 1);
+
+        if (null != sinceId) {
+            params.put("since_id", sinceId);
+        } else {
+            params.put("since_id", 1L);
+        }
 
         if (null != maxId) {
             params.put("max_id", maxId - 1);
         }
 
-        client.get(apiUrl, params, handler);
+        client.get(apiUrl, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Tweet[] data = gson.fromJson(new String(responseBody), Tweet[].class);
+                ArrayList<Tweet> tweetArrayList = new ArrayList<>();
+                Collections.addAll(tweetArrayList, data);
+
+                callback.onSuccess(tweetArrayList);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                callback.onError(error);
+                Log.e("Debug", new String(responseBody));
+            }
+        });
+    }
+
+    public void postTweet(String tweet, CreateTweetCallback callback) {
+        RequestParams params = new RequestParams();
+        params.put("status", tweet);
+
+        String apiUrl = getApiUrl("statuses/update.json");
+        client.post(apiUrl, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                callback.onSuccess();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                callback.onError(error);
+                Log.e("Debug", new String(responseBody));
+            }
+        });
     }
 
     /**
-     * Get twitter home timeline
+     * Get twitter home timeline mock when hitting resource limit exceeded
      *
-     * @param handler
+     * @param callback
      */
-    public void getHomeTimelineMock(Long maxId, AsyncHttpResponseHandler handler) {
+    public void getHomeTimelineMock(Long maxId, TweetsCallback callback) {
         String apiUrl = getApiUrl("/statuses/home_timeline.json");
 
         RequestParams params = new RequestParams();
@@ -66,7 +119,7 @@ public class TwitterClient extends OAuthBaseClient {
             params.put("max_id", maxId - 1);
         }
 
-        handler.onSuccess(200, null, ("[\n" +
+        Tweet[] data = gson.fromJson(new String(("[\n" +
                 "  {\n" +
                 "    \"coordinates\": null,\n" +
                 "    \"truncated\": false,\n" +
@@ -1435,6 +1488,22 @@ public class TwitterClient extends OAuthBaseClient {
                 "    \"in_reply_to_screen_name\": null,\n" +
                 "    \"in_reply_to_status_id\": null\n" +
                 "  }\n" +
-                "]").getBytes());
+                "]").getBytes()), Tweet[].class);
+        ArrayList<Tweet> tweetArrayList = new ArrayList<>();
+        Collections.addAll(tweetArrayList, data);
+
+        callback.onSuccess(tweetArrayList);
+    }
+
+    public interface TweetsCallback {
+        public void onSuccess(List<Tweet> tweetList);
+
+        public void onError(Throwable e);
+    }
+
+    public interface CreateTweetCallback {
+        public void onSuccess();
+
+        public void onError(Throwable e);
     }
 }

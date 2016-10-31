@@ -52,10 +52,12 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetViewHolder> {
     @Override
     public void onBindViewHolder(TweetViewHolder h, int position) {
         Tweet tweet = getItem(position);
+        String screenName = "@" + tweet.getUser().getScreenName();
 
         h.content.setText(tweet.getText());
         h.timePosted.setText(prettyTime.format(tweet.getCreatedAt()));
         h.author.setText(tweet.getUser().getName());
+        h.screenName.setText(screenName);
         h.favCount.setText(String.valueOf(tweet.getFavCount()));
         h.retweetCount.setText(String.valueOf(tweet.getRetweetCount()));
 

@@ -26,7 +26,7 @@
         tools:text="Libstore" />
 
     <TextView
-        android:id="@+id/authorLink"
+        android:id="@+id/screenName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="5dp"
@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/author"
-        android:layout_toRightOf="@id/authorLink"
+        android:layout_toRightOf="@id/screenName"
         tools:text="3m" />
 
     <TextView

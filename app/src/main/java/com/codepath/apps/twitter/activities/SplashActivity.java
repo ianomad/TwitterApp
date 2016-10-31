@@ -61,6 +61,8 @@ public class SplashActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 
     @Override
     public void onLoginFailure(Exception e) {
+        e.printStackTrace();
+
         fadeIn(connectButton);
         fadeIn(errorLabel);
     }

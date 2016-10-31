@@ -43,7 +43,7 @@ dependencies {
     compile 'com.codepath.libraries:android-oauth-handler:1.1.0'
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'
-
+    compile 'com.android.support:design:24.2.1'
 
     compile group: 'org.ocpsoft.prettytime', name: 'prettytime', version: '4.0.1.Final'
     compile group: 'com.google.code.gson', name: 'gson', version: '2.4'

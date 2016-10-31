@@ -1,5 +1,6 @@
 package com.codepath.apps.twitter.activities;
 
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,7 +15,6 @@ import com.codepath.apps.twitter.utils.EndlessRecyclerViewScrollListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import java.util.ArrayList;
@@ -28,6 +28,8 @@ public class HomeActivity extends AppCompatActivity {
 
     @BindView(R.id.tweetRV)
     RecyclerView recyclerView;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
 
     private final Gson gson = new GsonBuilder()
             .setPrettyPrinting()
@@ -63,6 +65,7 @@ public class HomeActivity extends AppCompatActivity {
                 twitterClient.getHomeTimeline(tweetList.get(tweetList.size() - 1).getId(), new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        //TODO: fix this
                         Tweet[] tweets = gson.fromJson(new String(responseBody), Tweet[].class);
                         tweetsAdapter.addTweets(tweets);
                         tweetsAdapter.notifyDataSetChanged();
@@ -81,6 +84,7 @@ public class HomeActivity extends AppCompatActivity {
         twitterClient.getHomeTimeline(null, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                //TODO: fix this
                 Tweet[] tweets = gson.fromJson(new String(responseBody), Tweet[].class);
                 tweetsAdapter.addTweets(tweets);
                 tweetsAdapter.notifyDataSetChanged();

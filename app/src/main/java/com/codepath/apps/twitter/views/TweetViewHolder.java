@@ -19,8 +19,8 @@ public class TweetViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.content)
     public TextView content;
-    @BindView(R.id.authorLink)
-    public TextView authorLink;
+    @BindView(R.id.screenName)
+    public TextView screenName;
     @BindView(R.id.author)
     public TextView author;
     @BindView(R.id.timePosted)

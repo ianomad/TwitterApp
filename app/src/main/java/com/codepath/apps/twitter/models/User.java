@@ -8,7 +8,11 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class User {
+
     String name;
+
+    @SerializedName("screen_name")
+    String screenName;
 
     @SerializedName("profile_image_url")
     String profileImageUrl;
@@ -41,5 +45,13 @@ public class User {
 
     public void setProfileBackgroundImageUrl(String profileBackgroundImageUrl) {
         this.profileBackgroundImageUrl = profileBackgroundImageUrl;
+    }
+
+    public String getScreenName() {
+        return screenName;
+    }
+
+    public void setScreenName(String screenName) {
+        this.screenName = screenName;
     }
 }

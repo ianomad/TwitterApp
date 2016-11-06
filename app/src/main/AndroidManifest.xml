@@ -33,7 +33,8 @@
                     android:scheme="oauth" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.HomeActivity"></activity>
+        <activity android:name=".activities.MainActivity" />
+        <activity android:name=".activities.UserActivity" />
     </application>
 
 </manifest>

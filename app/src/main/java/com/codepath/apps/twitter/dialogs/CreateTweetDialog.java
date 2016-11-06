@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.codepath.apps.twitter.R;
@@ -32,6 +33,8 @@ public class CreateTweetDialog extends DialogFragment {
     Button tweetBtn;
     @BindView(R.id.leftCharCount)
     TextView leftCharCount;
+    @BindView(R.id.dismissButton)
+    ImageButton dismissButton;
 
     public CreateTweetDialog() {
 
@@ -63,9 +66,8 @@ public class CreateTweetDialog extends DialogFragment {
             }
         });
 
-        tweetBtn.setOnClickListener((v) -> {
-            ((TweetHandler)getActivity()).onNewTweetSave(this, tweetEt.getText().toString());
-        });
+        tweetBtn.setOnClickListener((v) -> ((TweetHandler) getActivity()).onNewTweetSave(this, tweetEt.getText().toString()));
+        dismissButton.setOnClickListener((v -> this.dismiss()));
 
         return dialogBuilder.create();
     }

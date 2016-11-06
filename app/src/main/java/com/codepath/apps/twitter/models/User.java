@@ -2,12 +2,17 @@ package com.codepath.apps.twitter.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 /**
  * Created by akhmedovi on 10/30/16.
  * Copyright - 2015
  */
 
+@Parcel
 public class User {
+
+    String id;
 
     String name;
 
@@ -53,5 +58,13 @@ public class User {
 
     public void setScreenName(String screenName) {
         this.screenName = screenName;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

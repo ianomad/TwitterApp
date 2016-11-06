@@ -6,20 +6,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.codepath.apps.twitter.activities.HomeActivity">
+    tools:context="com.codepath.apps.twitter.activities.MainActivity">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeContainer"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/tweetRV"
+        <android.support.design.widget.TabLayout
+            android:id="@+id/slidingTabs"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            app:tabGravity="fill"
+            app:tabMaxWidth="0dp"
+            app:tabMode="fixed" />
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/slidingTabs" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_below="@id/slidingTabs"
+            android:background="@drawable/toolbar_drop_shadow" />
+
+    </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -27,9 +40,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:src="@drawable/add"
+        android:src="@drawable/create"
         app:backgroundTint="@color/colorPrimaryDark"
-        app:fabSize="normal"
+        app:fabSize="mini"
         app:layout_behavior="com.codepath.apps.twitter.utils.ScrollAwareFABBehavior" />
 
 

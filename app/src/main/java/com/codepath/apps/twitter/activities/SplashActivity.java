@@ -2,7 +2,6 @@ package com.codepath.apps.twitter.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -54,7 +53,7 @@ public class SplashActivity extends OAuthLoginActionBarActivity<TwitterClient> {
     }
 
     private void openHome() {
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }
@@ -70,11 +69,11 @@ public class SplashActivity extends OAuthLoginActionBarActivity<TwitterClient> {
     void fadeIn(View view) {
         view.setAlpha(0);
         view.setVisibility(View.VISIBLE);
-        view.animate().alpha(1).setDuration(1000).start();
+        view.animate().alpha(1).setDuration(300).start();
     }
 
     void fadeOut(View view) {
         view.setAlpha(1);
-        view.animate().alpha(0).setDuration(1000).withEndAction(() -> view.setVisibility(View.GONE)).start();
+        view.animate().alpha(0).setDuration(300).withEndAction(() -> view.setVisibility(View.GONE)).start();
     }
 }

@@ -1,5 +1,6 @@
 package com.codepath.apps.twitter.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,10 +12,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.twitter.R;
+import com.codepath.apps.twitter.activities.UserActivity;
 import com.codepath.apps.twitter.models.Tweet;
 import com.codepath.apps.twitter.views.TweetViewHolder;
 
 import org.ocpsoft.prettytime.PrettyTime;
+import org.parceler.Parcels;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,16 +32,16 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetViewHolder> {
 
-    static final int WITHOUTIMAGE = 1;
-    static final int WITHIMAGE = 2;
+    private static final int WITHOUT_IMAGE = 1;
+    private static final int WITH_IMAGE = 2;
 
-    Context context;
-    List<Tweet> tweetList;
-    PrettyTime prettyTime;
+    private Activity activity;
+    private List<Tweet> tweetList;
+    private PrettyTime prettyTime;
 
-    public TweetsAdapter(Context context, List<Tweet> tweetList) {
+    public TweetsAdapter(Activity activity, List<Tweet> tweetList) {
         this.tweetList = tweetList;
-        this.context = context;
+        this.activity = activity;
         this.prettyTime = new PrettyTime(Locale.US);
     }
 
@@ -46,10 +49,10 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetViewHolder> {
     public TweetViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view;
-        if (viewType == WITHOUTIMAGE) {
-            view = LayoutInflater.from(context).inflate(R.layout.tweet_item, parent, false);
+        if (viewType == WITHOUT_IMAGE) {
+            view = LayoutInflater.from(activity).inflate(R.layout.tweet_item, parent, false);
         } else {
-            view = LayoutInflater.from(context).inflate(R.layout.tweet_item_with_image, parent, false);
+            view = LayoutInflater.from(activity).inflate(R.layout.tweet_item_with_image, parent, false);
         }
 
         return new TweetViewHolder(view);
@@ -58,10 +61,10 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetViewHolder> {
     @Override
     public int getItemViewType(int position) {
         if (null == tweetList.get(position).getImageUrl()) {
-            return WITHOUTIMAGE;
+            return WITHOUT_IMAGE;
         }
 
-        return WITHIMAGE;
+        return WITH_IMAGE;
     }
 
     private Tweet getItem(int position) {
@@ -80,24 +83,28 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetViewHolder> {
         h.favCount.setText(String.valueOf(tweet.getFavCount()));
         h.retweetCount.setText(String.valueOf(tweet.getRetweetCount()));
 
-        Glide.with(context)
+        Glide.with(activity)
                 .load(tweet.getUser().getProfileImageUrl())
-                .bitmapTransform(new RoundedCornersTransformation(context, 3, 3))
+                .bitmapTransform(new RoundedCornersTransformation(activity, 3, 3))
                 .into(h.profileImage);
 
-        h.favCount.setOnClickListener((v) -> {
-            Toast.makeText(context, "You have liked this...", Toast.LENGTH_SHORT).show();
-        });
+        h.favCount.setOnClickListener((v) -> Toast.makeText(activity, "You have liked this...", Toast.LENGTH_SHORT).show());
 
         h.more.setOnClickListener((v) -> {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/ + " + tweet.getId()));
-            context.startActivity(browserIntent);
+            activity.startActivity(browserIntent);
         });
 
+        h.profileImage.setOnClickListener((v -> {
+            Intent intent = new Intent(activity, UserActivity.class);
+            intent.putExtra(UserActivity.USER, Parcels.wrap(tweet.getUser()));
+            activity.startActivity(intent);
+        }));
+
         if (null != tweet.getImageUrl() && null != h.imageView) {
-            Glide.with(context)
+            Glide.with(activity)
                     .load(tweet.getImageUrl())
-                    .bitmapTransform(new RoundedCornersTransformation(context, 3, 3))
+                    .bitmapTransform(new RoundedCornersTransformation(activity, 3, 3))
                     .into(h.imageView);
         }
     }
@@ -105,13 +112,5 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetViewHolder> {
     @Override
     public int getItemCount() {
         return tweetList.size();
-    }
-
-    public void addTweets(int index, List<Tweet> tweets) {
-        tweetList.addAll(index, tweets);
-    }
-
-    public void addTweets(List<Tweet> tweets) {
-        tweetList.addAll(tweets);
     }
 }

@@ -7,13 +7,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="192dp"
+    android:background="@color/colorPrimaryDark"
     android:gravity="bottom"
     android:orientation="vertical"
-    android:paddingLeft="16dp"
-    android:paddingStart="16dp"
-    android:paddingRight="16dp"
     android:paddingEnd="16dp"
-    android:background="@color/colorPrimaryDark">
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingStart="16dp">
 
     <RelativeLayout
         android:id="@+id/profileContainer"
@@ -89,6 +89,6 @@
         android:layout_alignTop="@id/profileContainer"
         android:layout_marginTop="-30dp"
         android:contentDescription="@string/profile_image"
-        tools:src="@drawable/ic_launcher" />
+        android:src="@drawable/empty" />
 
 </RelativeLayout>

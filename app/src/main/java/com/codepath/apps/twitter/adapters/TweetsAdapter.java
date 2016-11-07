@@ -88,6 +88,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetViewHolder> {
 
         Glide.with(activity)
                 .load(tweet.getUser().getProfileImageUrl())
+                .placeholder(R.drawable.empty)
                 .bitmapTransform(new RoundedCornersTransformation(activity, 3, 3))
                 .into(h.profileImage);
 

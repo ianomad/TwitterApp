@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements CreateTweetDialog
             public void onSuccess(UserProfile userProfile) {
                 Glide.with(MainActivity.this)
                         .load(userProfile.getProfileImageUrl())
+                        .placeholder(R.drawable.empty)
                         .bitmapTransform(new RoundedCornersTransformation(MainActivity.this, 3, 3))
                         .into(navHeaderViewHolder.profileImage);
 

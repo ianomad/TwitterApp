@@ -31,6 +31,10 @@
     <color name="transparent_white_80">#ccffffff</color>
     <color name="transparent_white_90">#e6ffffff</color>
     <color name="transparent_white_95">#f2ffffff</color>
+
+    <color name="grey">#757575</color>
+
     <color name="red">#ff0000</color>
+    <color name="exit">#b44f4f</color>
 
 </resources>

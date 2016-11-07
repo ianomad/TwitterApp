@@ -48,6 +48,8 @@ public class UserTimelineFragment extends Fragment implements CreateTweetDialog.
     TextView profileNameTV;
     @BindView(R.id.screenName)
     TextView screenNameTV;
+    @BindView(R.id.description)
+    TextView descriptionTV;
     @BindView(R.id.followingTV)
     TextView followingTV;
     @BindView(R.id.followersTV)
@@ -149,6 +151,7 @@ public class UserTimelineFragment extends Fragment implements CreateTweetDialog.
 
         profileNameTV.setText(userProfile.getName());
         screenNameTV.setText(screenName);
+        descriptionTV.setText(userProfile.getDescription());
 
         String following = userProfile.getFriendsCount() + " Following";
         String followers = userProfile.getFollowersCount() + " Followers";

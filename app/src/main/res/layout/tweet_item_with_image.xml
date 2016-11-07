@@ -94,7 +94,7 @@
         android:layout_toRightOf="@id/replyButton"
         android:drawableTop="@drawable/retweet"
         android:gravity="center"
-        android:textSize="10sp"
+        android:textSize="12sp"
         tools:text="115" />
 
     <TextView
@@ -110,7 +110,7 @@
         android:layout_toRightOf="@id/retweetCount"
         android:drawableTop="@drawable/favorite_icon"
         android:gravity="center"
-        android:textSize="10sp"
+        android:textSize="12sp"
         tools:text="115" />
 
     <ImageButton

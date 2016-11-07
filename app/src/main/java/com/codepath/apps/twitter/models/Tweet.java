@@ -4,15 +4,11 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
-/*
- * This is a temporary, sample model that demonstrates the basic structure
- * of a SQLite persisted Model object. Check out the DBFlow wiki for more details:
- * https://github.com/pardom/ActiveAndroid/wiki/Creating-your-database-model
- * 
- */
+
 public class Tweet {
 
     private Long id;
+
     private String text;
 
     @SerializedName("created_at")
@@ -23,10 +19,15 @@ public class Tweet {
     @SerializedName("favorite_count")
     private int favCount;
 
+    @SerializedName("retweeted_status")
+    private Tweet retweetedStatus;
+
     @SerializedName("retweet_count")
     private int retweetCount;
 
     private Entities entities;
+
+    private boolean favorited;
 
     public Tweet() {
 
@@ -57,10 +58,19 @@ public class Tweet {
     }
 
     public int getFavCount() {
+        if(null != retweetedStatus) {
+            return retweetedStatus.getFavCount();
+        }
+
         return favCount;
     }
 
     public void setFavCount(int favCount) {
+        if(null != retweetedStatus) {
+            retweetedStatus.setFavCount(favCount);
+            return;
+        }
+
         this.favCount = favCount;
     }
 
@@ -82,10 +92,34 @@ public class Tweet {
 
     public String getImageUrl() {
 
-        if(null == entities || null == entities.getMedia() || entities.getMedia().isEmpty()) {
+        if (null == entities || null == entities.getMedia() || entities.getMedia().isEmpty()) {
             return null;
         }
 
         return entities.getMedia().get(0).getMediaUrl();
+    }
+
+    public Tweet getRetweetedStatus() {
+        return retweetedStatus;
+    }
+
+    public void setRetweetedStatus(Tweet retweetedStatus) {
+        this.retweetedStatus = retweetedStatus;
+    }
+
+    public Entities getEntities() {
+        return entities;
+    }
+
+    public void setEntities(Entities entities) {
+        this.entities = entities;
+    }
+
+    public boolean isFavorited() {
+        return favorited;
+    }
+
+    public void setFavorited(boolean favorited) {
+        this.favorited = favorited;
     }
 }

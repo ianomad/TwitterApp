@@ -130,6 +130,7 @@ public class HomeFeedFragment extends Fragment implements CreateTweetDialog.Twee
             }
         };
 
+        swipeContainer.setRefreshing(true);
         if (feed == Feed.HOME) {
             twitterClient.getHomeTimeline(sinceId, maxId, callback);
         } else {

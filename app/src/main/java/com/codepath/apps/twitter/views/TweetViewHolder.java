@@ -10,6 +10,7 @@ import com.codepath.apps.twitter.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import uk.co.senab.photoview.PhotoView;
 
 /**
  * Created by akhmedovi on 10/30/16.

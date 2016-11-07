@@ -199,6 +199,46 @@ public class TwitterClient extends OAuthBaseClient {
         });
     }
 
+    public void addFavorite(Long id) {
+        String apiUrl = getApiUrl("/favorites/create.json");
+
+        RequestParams params = new RequestParams();
+        params.put("id", id);
+
+        client.post(apiUrl, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.d("Debug", "Fav added for " + id);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                error.printStackTrace();
+                Log.e("Debug", new String(responseBody));
+            }
+        });
+    }
+
+    public void removeFavorite(Long id) {
+        String apiUrl = getApiUrl("/favorites/destroy.json");
+
+        RequestParams params = new RequestParams();
+        params.put("id", id);
+
+        client.post(apiUrl, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.d("Debug", "Fav removed for " + id);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                error.printStackTrace();
+                Log.e("Debug", new String(responseBody));
+            }
+        });
+    }
+
     public void postTweet(String tweet, CreateTweetCallback callback) {
         RequestParams params = new RequestParams();
         params.put("status", tweet);

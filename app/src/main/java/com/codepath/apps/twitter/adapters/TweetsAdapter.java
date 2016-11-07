@@ -1,17 +1,20 @@
 package com.codepath.apps.twitter.adapters;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.twitter.R;
+import com.codepath.apps.twitter.TwitterApplication;
+import com.codepath.apps.twitter.TwitterClient;
 import com.codepath.apps.twitter.activities.UserActivity;
 import com.codepath.apps.twitter.models.Tweet;
 import com.codepath.apps.twitter.views.TweetViewHolder;
@@ -19,7 +22,6 @@ import com.codepath.apps.twitter.views.TweetViewHolder;
 import org.ocpsoft.prettytime.PrettyTime;
 import org.parceler.Parcels;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -38,11 +40,13 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetViewHolder> {
     private Activity activity;
     private List<Tweet> tweetList;
     private PrettyTime prettyTime;
+    private TwitterClient twitterClient;
 
     public TweetsAdapter(Activity activity, List<Tweet> tweetList) {
         this.tweetList = tweetList;
         this.activity = activity;
         this.prettyTime = new PrettyTime(Locale.US);
+        this.twitterClient = TwitterApplication.getTwitterClient();
     }
 
     @Override
@@ -80,7 +84,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetViewHolder> {
         h.timePosted.setText(prettyTime.format(tweet.getCreatedAt()));
         h.author.setText(tweet.getUser().getName());
         h.screenName.setText(screenName);
-        h.favCount.setText(String.valueOf(tweet.getFavCount()));
         h.retweetCount.setText(String.valueOf(tweet.getRetweetCount()));
 
         Glide.with(activity)
@@ -88,7 +91,23 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetViewHolder> {
                 .bitmapTransform(new RoundedCornersTransformation(activity, 3, 3))
                 .into(h.profileImage);
 
-        h.favCount.setOnClickListener((v) -> Toast.makeText(activity, "You have liked this...", Toast.LENGTH_SHORT).show());
+        setFavoriteData(h, tweet);
+
+        h.favCount.setOnClickListener((v) -> {
+            int favCount = tweet.getFavCount();
+            if (tweet.isFavorited()) {
+                twitterClient.removeFavorite(tweet.getId());
+                tweet.setFavorited(false);
+                favCount--;
+            } else {
+                twitterClient.addFavorite(tweet.getId());
+                tweet.setFavorited(true);
+                favCount++;
+            }
+
+            tweet.setFavCount(favCount);
+            setFavoriteData(h, tweet);
+        });
 
         h.more.setOnClickListener((v) -> {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/ + " + tweet.getId()));
@@ -112,5 +131,19 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetViewHolder> {
     @Override
     public int getItemCount() {
         return tweetList.size();
+    }
+
+    private void setFavoriteData(TweetViewHolder h, Tweet tweet) {
+        Log.d("Debug", tweet.getId() + " " + tweet.isFavorited());
+
+        if (tweet.isFavorited()) {
+            DrawableCompat.setTint(h.favCount.getCompoundDrawables()[1],
+                    ResourcesCompat.getColor(activity.getResources(), R.color.exit, null));
+        } else {
+            DrawableCompat.setTint(h.favCount.getCompoundDrawables()[1],
+                    ResourcesCompat.getColor(activity.getResources(), R.color.grey, null));
+        }
+
+        h.favCount.setText(String.valueOf(tweet.getFavCount()));
     }
 }

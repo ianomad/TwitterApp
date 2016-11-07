@@ -191,6 +191,41 @@ public class TwitterClient extends OAuthBaseClient {
         });
     }
 
+
+    public void getFavorites(Long sinceId, Long maxId, TweetsCallback callback) {
+        String apiUrl = getApiUrl("/favorites/list.json");
+
+        RequestParams params = new RequestParams();
+        params.put("count", 25);
+
+        if (null != sinceId) {
+            params.put("since_id", sinceId);
+        } else {
+            params.put("since_id", 1L);
+        }
+
+        if (null != maxId) {
+            params.put("max_id", maxId - 1);
+        }
+
+        client.get(apiUrl, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Tweet[] data = gson.fromJson(new String(responseBody), Tweet[].class);
+                ArrayList<Tweet> tweetArrayList = new ArrayList<>();
+                Collections.addAll(tweetArrayList, data);
+
+                callback.onSuccess(tweetArrayList);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                callback.onError(error);
+                Log.e("Debug", new String(responseBody));
+            }
+        });
+    }
+
     public void getUserProfile(String userId, String screenName, UserProfileCallback callback) {
         String apiUrl = getApiUrl("/users/show.json");
 

@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements CreateTweetDialog
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+        navView.setItemIconTintList(null);
 
         setSupportActionBar(toolbar);
 
@@ -127,12 +128,13 @@ public class MainActivity extends AppCompatActivity implements CreateTweetDialog
     }
 
     private void selectDrawerItem(MenuItem menuItem) {
-        //TODO:
-
         switch (menuItem.getItemId()) {
             case R.id.sign_out: {
                 signOut();
                 return;
+            }
+            case R.id.favorites: {
+                startActivity(new Intent(this, FavoritesActivity.class));
             }
             default: {
 

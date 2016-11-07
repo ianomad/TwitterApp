@@ -18,5 +18,8 @@
     <string name="post_image">Post image</string>
 
     <string name="search">Search</string>
+    <string name="favorites">Favorites</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
 
 </resources>

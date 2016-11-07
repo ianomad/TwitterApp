@@ -5,9 +5,7 @@
 
 package com.codepath.apps.twitter.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -38,7 +36,6 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class UserTimelineFragment extends Fragment implements CreateTweetDialog.TweetHandler {
 
-    private Listener listener;
     private static final String USER_ID = "USER_ID";
     private static final String SCREEN_NAME = "SCREEN_NAME";
 
@@ -111,7 +108,6 @@ public class UserTimelineFragment extends Fragment implements CreateTweetDialog.
 
         swipeContainer.setOnRefreshListener(this::getNewestTweets);
 
-
         return view;
     }
 
@@ -134,6 +130,8 @@ public class UserTimelineFragment extends Fragment implements CreateTweetDialog.
 
         String userId = getArguments().getString(USER_ID);
         String screenName = getArguments().getString(SCREEN_NAME);
+        swipeContainer.setRefreshing(true);
+
         if (null == screenName || null == userId) {
             twitterClient.getMyUserProfile(callback);
         } else {
@@ -193,30 +191,8 @@ public class UserTimelineFragment extends Fragment implements CreateTweetDialog.
         twitterClient.getUserTimeline(userProfile.getId(), sinceId, maxId, callback);
     }
 
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (context instanceof Listener) {
-            listener = (UserTimelineFragment.Listener) context;
-        } else {
-            throw new RuntimeException(context.toString() + " must implement Listener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        listener = null;
-    }
-
     @Override
     public void onNewTweetSave(CreateTweetDialog dialog, String tweet) {
         getNewestTweets();
-    }
-
-    public interface Listener {
-        public void userTimelineInteract();
     }
 }

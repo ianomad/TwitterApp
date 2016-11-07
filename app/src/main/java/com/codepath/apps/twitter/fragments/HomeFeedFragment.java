@@ -32,8 +32,6 @@ public class HomeFeedFragment extends Fragment implements CreateTweetDialog.Twee
         HOME, MENTIONS
     }
 
-    private TweetTabListener listener;
-
     @BindView(R.id.tweetRV)
     RecyclerView recyclerView;
     @BindView(R.id.swipeContainer)
@@ -141,26 +139,5 @@ public class HomeFeedFragment extends Fragment implements CreateTweetDialog.Twee
     @Override
     public void onNewTweetSave(CreateTweetDialog dialog, String tweet) {
         getNewestTweets();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (context instanceof TweetTabListener) {
-            listener = (TweetTabListener) context;
-        } else {
-            throw new RuntimeException(context.toString() + " must implement TweetTabListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        listener = null;
-    }
-
-    public interface TweetTabListener {
-        void tweetTabInteract();
     }
 }

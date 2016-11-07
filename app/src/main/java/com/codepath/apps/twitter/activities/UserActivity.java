@@ -16,7 +16,7 @@ import com.codepath.apps.twitter.models.User;
 
 import org.parceler.Parcels;
 
-public class UserActivity extends AppCompatActivity implements UserTimelineFragment.Listener {
+public class UserActivity extends AppCompatActivity {
 
     public static final String USER = "USER";
 
@@ -53,10 +53,5 @@ public class UserActivity extends AppCompatActivity implements UserTimelineFragm
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void userTimelineInteract() {
-
     }
 }

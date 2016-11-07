@@ -8,8 +8,9 @@
     <group
         android:translateX="-359.000000"
         android:translateY="-407.000000">
+
         <path
-            android:fillColor="@color/exit"
+            android:fillColor="#b44f4f"
             android:pathData="M360,408 L360,430 L375,430 L375,423.5 L374,423.5 L374,429 L361,429 L361,409
 L374,409 L374,414.5 L375,414.5 L375,408 L360,408 Z M377.050253,415.464466
 L377.757359,414.757359 L382,419 L377.757359,423.242641 L377.050253,422.535534

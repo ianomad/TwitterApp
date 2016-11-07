@@ -7,6 +7,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.codepath.apps.twitter.models.Tweet;
+import com.codepath.apps.twitter.models.TweetSearchResponse;
 import com.codepath.apps.twitter.models.UserProfile;
 import com.codepath.oauth.OAuthBaseClient;
 import com.google.gson.Gson;
@@ -147,6 +148,39 @@ public class TwitterClient extends OAuthBaseClient {
                 Collections.addAll(tweetArrayList, data);
 
                 callback.onSuccess(tweetArrayList);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                callback.onError(error);
+                Log.e("Debug", new String(responseBody));
+            }
+        });
+    }
+
+
+    public void getBySearchKey(String query, Long sinceId, Long maxId, TweetsCallback callback) {
+        String apiUrl = getApiUrl("/search/tweets.json");
+
+        RequestParams params = new RequestParams();
+        params.put("q", query);
+        params.put("count", 25);
+
+        if (null != sinceId) {
+            params.put("since_id", sinceId);
+        } else {
+            params.put("since_id", 1L);
+        }
+
+        if (null != maxId) {
+            params.put("max_id", maxId - 1);
+        }
+
+        client.get(apiUrl, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                TweetSearchResponse data = gson.fromJson(new String(responseBody), TweetSearchResponse.class);
+                callback.onSuccess(data.getStatuses());
             }
 
             @Override

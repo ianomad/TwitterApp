@@ -134,8 +134,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetViewHolder> {
     }
 
     private void setFavoriteData(TweetViewHolder h, Tweet tweet) {
-        Log.d("Debug", tweet.getId() + " " + tweet.isFavorited());
-
         if (tweet.isFavorited()) {
             DrawableCompat.setTint(h.favCount.getCompoundDrawables()[1],
                     ResourcesCompat.getColor(activity.getResources(), R.color.exit, null));

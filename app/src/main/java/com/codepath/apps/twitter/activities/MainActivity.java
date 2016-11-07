@@ -99,7 +99,9 @@ public class MainActivity extends AppCompatActivity implements CreateTweetDialog
     }
 
     private void performSearch(String query) {
-        //TODO:
+        Intent intent = new Intent(this, SearchActivity.class);
+        intent.putExtra(SearchActivity.SEARCH, query);
+        startActivity(intent);
     }
 
     @Override
